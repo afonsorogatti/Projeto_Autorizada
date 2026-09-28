@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dispatch Checker</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>Dispatch Checker</h1>
+
+
+            <form method="POST">
+
+                <!-- Cidade -->
+
+                <div class="form-group">
+
+                    <label for="cidade">
+                        Cidade:
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cidade"
+                        name="cidade"
+                        placeholder="Digite a cidade"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Estado -->
+
+                <div class="form-group">
+
+                    <label for="estado">
+                        Estado:
+                    </label>
+
+                    <select
+                        id="estado"
+                        name="estado"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione o estado
+                        </option>
+
+                        <option value="Acre (AC)">
+                            Acre (AC)
+                        </option>
+
+                        <option value="Alagoas (AL)">
+                            Alagoas (AL)
+                        </option>
+
+                        <option value="Amapá (AP)">
+                            Amapá (AP)
+                        </option>
+
+                        <option value="Amazonas (AM)">
+                            Amazonas (AM)
+                        </option>
+
+                        <option value="Bahia (BA)">
+                            Bahia (BA)
+                        </option>
+
+                        <option value="Ceará (CE)">
+                            Ceará (CE)
+                        </option>
+
+                        <option value="Distrito Federal (DF)">
+                            Distrito Federal (DF)
+                        </option>
+
+                        <option value="Espírito Santo (ES)">
+                            Espírito Santo (ES)
+                        </option>
+
+                        <option value="Goiás (GO)">
+                            Goiás (GO)
+                        </option>
+
+                        <option value="Maranhão (MA)">
+                            Maranhão (MA)
+                        </option>
+
+                        <option value="Mato Grosso (MT)">
+                            Mato Grosso (MT)
+                        </option>
+
+                        <option value="Mato Grosso do Sul (MS)">
+                            Mato Grosso do Sul (MS)
+                        </option>
+
+                        <option value="Minas Gerais (MG)">
+                            Minas Gerais (MG)
+                        </option>
+
+                        <option value="Pará (PA)">
+                            Pará (PA)
+                        </option>
+
+                        <option value="Paraíba (PB)">
+                            Paraíba (PB)
+                        </option>
+
+                        <option value="Paraná (PR)">
+                            Paraná (PR)
+                        </option>
+
+                        <option value="Pernambuco (PE)">
+                            Pernambuco (PE)
+                        </option>
+
+                        <option value="Piauí (PI)">
+                            Piauí (PI)
+                        </option>
+
+                        <option value="Rio de Janeiro (RJ)">
+                            Rio de Janeiro (RJ)
+                        </option>
+
+                        <option value="Rio Grande do Norte (RN)">
+                            Rio Grande do Norte (RN)
+                        </option>
+
+                        <option value="Rio Grande do Sul (RS)">
+                            Rio Grande do Sul (RS)
+                        </option>
+
+                        <option value="Rondônia (RO)">
+                            Rondônia (RO)
+                        </option>
+
+                        <option value="Roraima (RR)">
+                            Roraima (RR)
+                        </option>
+
+                        <option value="Santa Catarina (SC)">
+                            Santa Catarina (SC)
+                        </option>
+
+                        <option value="São Paulo (SP)">
+                            São Paulo (SP)
+                        </option>
+
+                        <option value="Sergipe (SE)">
+                            Sergipe (SE)
+                        </option>
+
+                        <option value="Tocantins (TO)">
+                            Tocantins (TO)
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Botão Pesquisar -->
+
+                <button type="submit">
+                    Pesquisar
+                </button>
+
+            </form>
+
+
+            <!-- RESULTADO -->
+
+            {% if resultado %}
+
+
+                <!-- MANUAL DISPATCH -->
+
+                {% if resultado.tipo == "MANUAL DISPATCH" %}
+
+                    <div class="resultado manual">
+
+                        <h2>
+                            MANUAL DISPATCH
+                        </h2>
+
+                        <p>
+                            O caso deve ser direcionado via
+                            <strong>Manual Dispatch</strong>.
+                        </p>
+
+                    </div>
+
+
+                <!-- AUTOMATIC DISPATCH -->
+
+                {% elif resultado.tipo == "AUTOMATIC DISPATCH" %}
+
+                    <div class="resultado automatic">
+
+                        <h2>
+                            AUTOMATIC DISPATCH
+                        </h2>
+
+
+                        <!-- SUPPLIER -->
+
+                        <div class="campo">
+
+                            <strong>
+                                Supplier:
+                            </strong>
+
+                            <div class="campo-valor">
+
+                                <span id="supplier">
+                                    {{ resultado.supplier }}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="botao-copiar"
+                                    onclick="copiarTexto('supplier')"
+                                >
+                                    Copiar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PPL SUPPLIER -->
+
+                        <div class="campo">
+
+                            <strong>
+                                PPL Supplier:
+                            </strong>
+
+                            <div class="campo-valor">
+
+                                <span id="ppl_supplier">
+                                    {{ resultado.ppl_supplier }}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="botao-copiar"
+                                    onclick="copiarTexto('ppl_supplier')"
+                                >
+                                    Copiar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MENSAGEM DE CÓPIA -->
+
+                        <div
+                            id="mensagem-copia"
+                            style="
+                                display: none;
+                                margin-top: 15px;
+                                font-weight: bold;
+                            "
+                        >
+                        </div>
+
+                    </div>
+
+
+                <!-- CIDADE NÃO ENCONTRADA -->
+
+                {% else %}
+
+                    <div class="resultado erro">
+
+                        <h2>
+                            CIDADE NÃO ENCONTRADA
+                        </h2>
+
+                        <p>
+                            Verifique se a cidade foi digitada
+                            corretamente ou se o estado selecionado
+                            está correto.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        function copiarTexto(id) {
+
+            const elemento = document.getElementById(id);
+
+            const texto = elemento.innerText;
+
+            navigator.clipboard.writeText(texto).then(function() {
+
+                const mensagem =
+                    document.getElementById("mensagem-copia");
+
+                mensagem.innerText =
+                    "Copiada para a Área de Transferência";
+
+                mensagem.style.display = "block";
+
+
+                setTimeout(function() {
+
+                    mensagem.style.display = "none";
+
+                }, 3000);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

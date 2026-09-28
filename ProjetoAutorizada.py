@@ -1,10 +1,13 @@
 from pathlib import Path
 
 import pandas as pd
+from flask import Flask, render_template, request
 
 
 PASTA_PROJETO = Path(__file__).resolve().parent
 ARQUIVO_EXCEL = PASTA_PROJETO / "Resources x Cities para Dispatch.xlsx"
+
+app = Flask(__name__)
 
 
 def carregar_base():
@@ -46,5 +49,34 @@ def analisar_dispatch(registro):
     }
 
 
+df = carregar_base()
+
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    resultado = None
+
+    if request.method == "POST":
+        cidade = request.form["cidade"]
+        estado = request.form["estado"]
+
+        pesquisa = pesquisar_cidade(df, cidade, estado)
+
+        if pesquisa.empty:
+            resultado = {
+                "tipo": "CIDADE NÃO ENCONTRADA. VERIFIQUE SE FOI DIGITADA CORRETAMENTE OU SE O ESTADO SELECIONADO É O CORRETO.",
+                "supplier": None,
+                "ppl_supplier": None,
+            }
+        else:
+            registro = pesquisa.iloc[0]
+            resultado = analisar_dispatch(registro)
+
+    return render_template(
+        "index.html",
+        resultado=resultado
+    )
+
+
 if __name__ == "__main__":
-    df = carregar_base()
+    app.run(debug=True)
