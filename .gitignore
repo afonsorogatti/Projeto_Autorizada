@@ -5,3 +5,7 @@ __pycache__/
 
 # Database
 Resources x Cities para Dispatch.xlsx
+# PyInstaller
+build/
+dist/
+*.spec
