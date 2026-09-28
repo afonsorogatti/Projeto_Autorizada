@@ -1,11 +1,17 @@
 from pathlib import Path
-
 import pandas as pd
 from flask import Flask, render_template, request
+import sys
+import webbrowser
+
+if getattr(sys, "frozen", False):
+    PASTA_PROJETO = Path(sys.executable).resolve().parent
+else:
+    PASTA_PROJETO = Path(__file__).resolve().parent
 
 
-PASTA_PROJETO = Path(__file__).resolve().parent
 ARQUIVO_EXCEL = PASTA_PROJETO / "Resources x Cities para Dispatch.xlsx"
+
 
 app = Flask(__name__)
 
@@ -79,4 +85,12 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import threading
+    import webbrowser
+
+    threading.Timer(
+        1.5,
+        lambda: webbrowser.open("http://127.0.0.1:5000")
+    ).start()
+
+    app.run(debug=False)
